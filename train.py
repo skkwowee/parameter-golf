@@ -47,7 +47,7 @@ class Hyperparameters:
     val_loss_every = int(os.environ.get("VAL_LOSS_EVERY", 4000))  # [TUNED] upstream=1000
     train_log_every = int(os.environ.get("TRAIN_LOG_EVERY", 500))  # [TUNED] upstream=200
     iterations = int(os.environ.get("ITERATIONS", 20000))  # [UPSTREAM]
-    warmdown_iters = int(os.environ.get("WARMDOWN_ITERS", 3500))  # [TUNED] upstream=1200, proportional warmdown fix
+    warmdown_iters = int(os.environ.get("WARMDOWN_ITERS", 4000))  # [TUNED] upstream=1200, matches leader #1
     warmup_steps = int(os.environ.get("WARMUP_STEPS", 20))  # [UPSTREAM]
     train_batch_tokens = int(os.environ.get("TRAIN_BATCH_TOKENS", 786_432))  # [TUNED] upstream=524288, 1.5x throughput
     train_seq_len = int(os.environ.get("TRAIN_SEQ_LEN", 2048))  # [TUNED] upstream=1024, 2x context
@@ -93,15 +93,15 @@ class Hyperparameters:
     lawa_freq = int(os.environ.get("LAWA_FREQ", 100))  # [NOVEL]
 
     # ── NOVEL: Eval ─────────────────────────────────────────────────────
-    eval_stride = int(os.environ.get("EVAL_STRIDE", 16))  # [NOVEL] denser sliding window
+    eval_stride = int(os.environ.get("EVAL_STRIDE", 64))  # [NOVEL] sliding window stride (both leaders use 64)
 
     # ── NOVEL: Multi-token prediction ───────────────────────────────────
     mtp_num_heads = int(os.environ.get("MTP_NUM_HEADS", 0))  # [NOVEL]
     mtp_loss_weight = float(os.environ.get("MTP_LOSS_WEIGHT", 0.2))  # [NOVEL]
 
     # ── NOVEL: Bigram/trigram hash ──────────────────────────────────────
-    bigram_vocab_size = int(os.environ.get("BIGRAM_VOCAB_SIZE", 3072))  # [NOVEL]
-    bigram_dim = int(os.environ.get("BIGRAM_DIM", 112))  # [NOVEL]
+    bigram_vocab_size = int(os.environ.get("BIGRAM_VOCAB_SIZE", 2048))  # [NOVEL] both leaders use 2048
+    bigram_dim = int(os.environ.get("BIGRAM_DIM", 128))  # [NOVEL] both leaders use 128
     trigram_enabled = bool(int(os.environ.get("TRIGRAM", "0")))  # [NOVEL] risky, off by default
 
     # ── NOVEL: XSA (Cross-Sequence Attention) ───────────────────────────
@@ -130,12 +130,12 @@ class Hyperparameters:
     attn_res_block_size = int(os.environ.get("ATTN_RES_BLOCK_SIZE", 4))  # [NOVEL]
 
     # ── NOVEL: Progressive sequence length ──────────────────────────────
-    prog_seq = bool(int(os.environ.get("PROG_SEQ", "1")))  # [NOVEL]
+    prog_seq = bool(int(os.environ.get("PROG_SEQ", "0")))  # [NOVEL] shelved — not used by leaders
     prog_seq_start = int(os.environ.get("PROG_SEQ_START", 512))  # [NOVEL]
     prog_seq_ramp_frac = float(os.environ.get("PROG_SEQ_RAMP_FRAC", 0.3))  # [NOVEL] fraction of steps to ramp over
 
     # ── NOVEL: Test-Time Training ───────────────────────────────────────
-    ttt_enabled = bool(int(os.environ.get("TTT_ENABLED", "1")))  # [NOVEL]
+    ttt_enabled = bool(int(os.environ.get("TTT_ENABLED", "0")))  # [NOVEL] shelved — #1 tried 25x, neutral/negative
     ttt_lr = float(os.environ.get("TTT_LR", 0.002))  # [NOVEL]
     ttt_epochs = int(os.environ.get("TTT_EPOCHS", 3))  # [NOVEL]
     ttt_chunk_tokens = int(os.environ.get("TTT_CHUNK_TOKENS", 32768))  # [NOVEL]
