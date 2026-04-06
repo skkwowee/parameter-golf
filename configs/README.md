@@ -17,7 +17,7 @@ source configs/exp_bigram_hash.env
 source configs/exp_value_embed.env
 source configs/exp_ln_scale.env
 source configs/exp_rope_dims.env
-torchrun --nproc_per_node=8 train_top2.py
+torchrun --nproc_per_node=8 train.py
 
 # Run upstream baseline (for comparison):
 source configs/upstream_baseline.env
